@@ -24,11 +24,24 @@ class ListenRate < Sinatra::Base
     # Configure DataMapper
     DataMapper.setup(:default, "sqlite://#{Dir.pwd}/users.sqlite")
     DataMapper.finalize
-    DataMapper.auto_migrate!
+    DataMapper.auto_upgrade!
   end
 
   get '/' do
     haml :index
+  end
+
+  get '/info/:username' do
+    username = params[:username]
+    session = Session.first(:username => username)
+    if session.nil?
+      # TODO handle the redirection crap
+      "Need to do magic"
+    else
+      $lastfm.session = session.session_key
+      pp $lastfm.user.get_info(username)
+      "It worked!"
+    end
   end
 
   get '/style.css' do
