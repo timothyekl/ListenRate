@@ -1,0 +1,4 @@
+%strong User: #{@user_info.username} (#{@user_info.plays_per_day(2)} plays per day)
+%ul
+  %li Listens: #{@user_info.play_count}
+  %li Since: #{@user_info["registered"]["content"]} (#{@user_info.days_registered} days)

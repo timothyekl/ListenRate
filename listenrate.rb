@@ -2,6 +2,7 @@
 require 'sinatra/base'
 require 'data_mapper'
 require 'haml'
+require 'sass'
 
 # Last.fm/configuration requires
 require 'lastfm'
@@ -9,6 +10,7 @@ require 'parseconfig'
 
 # Local files
 Dir['./models/*.rb'].each {|f| require f}
+require './userinfo.rb'
 
 class ListenRate < Sinatra::Base
 
@@ -24,8 +26,15 @@ class ListenRate < Sinatra::Base
     DataMapper.auto_upgrade!
   end
 
+  helpers do
+    def show_page(contents)
+      @page = contents
+      haml :layout
+    end
+  end
+
   get '/' do
-    haml :index
+    show_page(:index)
   end
 
   get '/info/:username' do
@@ -38,7 +47,8 @@ class ListenRate < Sinatra::Base
       redirect url
     else
       $lastfm.session = session.session_key
-      $lastfm.user.get_info(username)
+      @user_info = UserInfo.new $lastfm.user.get_info(username)
+      show_page(:info)
     end
   end
 

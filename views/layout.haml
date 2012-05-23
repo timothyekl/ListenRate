@@ -1,0 +1,11 @@
+!!!
+
+%html
+  %head
+    %title= "ListenRate :: #{@page.to_s.capitalize}"
+    %link{:rel => "stylesheet", :type => "text/css", :href => "/style.css"}
+    %script{:lang => "javascript", :type => "text/javascript", :src => "https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"}
+    %script{:lang => "javascript", :type => "text/javascript", :src => "/js/#{@page.to_s}.js"}
+  %body
+    #content
+      = haml @page
